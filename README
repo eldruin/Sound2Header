@@ -1,0 +1,15 @@
+Sound2Header (sound to header) is a little and simple C program that I
+have done in a while using the libsndfile library to convert any sound
+file supported by libsndfile to an array of samples in a range given
+by the command line. So the generated file can be included in any
+C/C++ souce code file. It’s intended for embedded projects where it’s
+not possible to open files like when there is an operative
+system. Sound2Header is free software licensed under the GNU/GPL
+version 3 or later license and the code is attached. It can be easily
+compiled executing (you need to have the libsndfile library
+installed):
+
+    $ gcc -lsndfile sound2header.c -o sound2header
+
+Many thanks to Erik de Castro Lopo for creating and mantaining the
+libsndfile library. Keep developing free software!
