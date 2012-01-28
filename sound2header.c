@@ -36,12 +36,12 @@ int main (int argc, char *argv[])
   SNDFILE *input = NULL;
   FILE *output = NULL;
   SF_INFO sfinfo;
- 
+
   if (argc != 5){
     print_usage();
     return 0;
   }
-  
+
   left_limit = atoi(argv[2]);
   right_limit = atoi(argv[3])+1;
 
@@ -61,10 +61,10 @@ int main (int argc, char *argv[])
 
   if ( !(input = sf_open (argv[1], SFM_READ, &sfinfo)) ){
     fprintf(stderr, "Error opening the input file %s.\n", argv[1]);
-    fprintf(stderr, sf_strerror (NULL));
+    fprintf(stderr, "%s", sf_strerror (NULL));
     return 1;
   }
-  
+
   /* Filename conversion */
   len = strlen(argv[1]);
   if ( !(outfilename = malloc (len + 3 * sizeof(char))) ){
@@ -74,7 +74,7 @@ int main (int argc, char *argv[])
   }
   strcpy(outfilename, argv[1]);
   strcpy(outfilename+len, ".h");
-  
+
   if ( !(output = fopen(outfilename, "w")) ){
     fprintf(stderr, "Error opening the output file %s.\n", outfilename);
     sf_close(input);
@@ -97,20 +97,20 @@ int main (int argc, char *argv[])
 	  " * %i channels and %i samples.\n"
 	  " */\n\n", left_limit, right_limit-1, (int)sfinfo.channels,
 	  (int)sfinfo.frames);
-  
+
   outfilename[i-2] = '_';
   fprintf(output, "const unsigned %s %s[%i] = {", datatype, outfilename,
 	  (int)(sfinfo.frames * sfinfo.channels));
 
   free(outfilename);
-  
+
   if ( !(buffer = (int*) malloc (sfinfo.channels * BUFFER_SIZE * sizeof(int))) ){
       fprintf(stderr, "Error: No memory available.\n");
       sf_close(input);
       fclose(output);
       return 1;
   }
-  
+
   if ( !(number_str = (char*) malloc (16)) ){
       fprintf(stderr, "Error: No memory available.\n");
       free(buffer);
@@ -120,7 +120,7 @@ int main (int argc, char *argv[])
   }
 
   linebreak = 0;
-  count = BUFFER_SIZE * sfinfo.channels; 
+  count = BUFFER_SIZE * sfinfo.channels;
   while ( (read = sf_read_int (input, buffer, count)) > 0){
     for (i = 0; i < read; i++, linebreak++){
       if (!(linebreak%20)) /* Breaks the lines sometimes */
@@ -139,9 +139,9 @@ int main (int argc, char *argv[])
   fprintf (output, "\n};\n");
 
   free(buffer);
-  free(number);
+  free(number_str);
   sf_close(input);
-  fclose(output);  
+  fclose(output);
 
   return 0;
 }
