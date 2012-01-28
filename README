@@ -6,7 +6,8 @@ C/C++ souce code file. It’s intended for embedded projects where it’s
 not possible to open files like when there is an operative
 system. Sound2Header is free software licensed under the GNU/GPL
 version 3 or later license and the code is attached. It can be easily
-compiled with make as usual.
+compiled with make as usual (it needs the libsndfile library, in
+ubuntu is the package libsndfile-dev).
 
     $ make
 
